@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/crypngoj/repositories/portfolio-api-new
+    - /bin/cp -R * $DEPLOYPATH
