@@ -7,29 +7,37 @@ const messageRoutes = require('./routes/messages');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// CORS configuration
+// 1. Define allowed origins
+const allowedOrigins = [
+  'https://davidadebanwo.com',
+  'https://www.davidadebanwo.com',
+  'http://localhost:3000',
+  'http://localhost:5173'
+];
+
+// 2. Configure CORS middleware
 const corsOptions = {
-  origin: [
-    'https://davidadebanwo.com',
-    'https://www.davidadebanwo.com',
-    'http://localhost:3000', // for local development if needed
-    'http://localhost:5173'  // for Vite local development if needed
-  ],
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, or Postman)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
-  optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
 
+// 3. Apply CORS Middleware - MUST be before routes
 app.use(cors(corsOptions));
 
-// Additional middleware to handle preflight requests explicitly
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.sendStatus(200);
-});
+// 4. Handle Preflight Requests specifically for all routes
+app.options('*', cors(corsOptions));
+
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
