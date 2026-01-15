@@ -24,7 +24,7 @@ module.exports = {
   sequelize,
   connectDB: async () => {
     try {
-      await sequelize.authenticate();
+      await sequelize.sync({alter: true});
       console.log('Database connection has been established successfully.');
 
       // Sync all models

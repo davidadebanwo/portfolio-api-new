@@ -11,8 +11,11 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   'https://davidadebanwo.com',
   'https://www.davidadebanwo.com',
+  'https://emmanueladama.com',       // Emmanuel's portfolio - REPLACE with actual domain
+  'https://www.emmanueladama.com',   // Emmanuel's portfolio - REPLACE with actual domain
   'http://localhost:3000',
-  'http://localhost:5173'
+  'http://localhost:5500',
+  'http://localhost:5173',
 ];
 
 // 2. Configure CORS middleware
@@ -20,7 +23,7 @@ const corsOptions = {
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps, curl, or Postman)
     if (!origin) return callback(null, true);
-    
+
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -49,8 +52,10 @@ app.get('/', (req, res) => {
   res.json({
     message: 'Portfolio Backend API is running!',
     endpoints: {
-      'POST /api/messages': 'Submit a new message',
-      'GET /api/messages': 'Retrieve all messages (admin only)'
+      'POST /api/messages': 'Submit a new message (include "source" field to specify portfolio)',
+      'GET /api/messages': 'Retrieve all messages (use ?source=domain.com to filter)',
+      'GET /api/messages/:source': 'Retrieve messages for a specific portfolio source',
+      'GET /api/sources': 'List all valid portfolio sources'
     }
   });
 });

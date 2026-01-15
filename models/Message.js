@@ -36,6 +36,14 @@ const Message = sequelize.define('Message', {
       notEmpty: true
     }
   },
+  source: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: 'davidadebanwo.com',
+    validate: {
+      notEmpty: true
+    }
+  },
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
