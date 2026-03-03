@@ -7,21 +7,31 @@ const router = express.Router();
 // Valid portfolio sources - add your portfolio domains here
 const VALID_SOURCES = [
   'davidadebanwo.com',
-  'emmanueladama.com'
+  'emmanueladama.com',
+  'ikissednick.com',
+  'localhost:5501',
+  'nickalexander.netlify.app'
 ];
+
+// --- Password mapping per portfolio source ---
+const SOURCE_PASSWORD_MAP = {
+  'ikissednick.com': 'NICK_PASSWORD',
+  'davidadebanwo.com': 'ADMIN_PASSWORD',
+  'emmanueladama.com': 'ADMIN_PASSWORD',
+};
 
 // --- AUTH ROUTE ---
 router.post('/login', (req, res) => {
-  const { password } = req.body;
+  const { password, source } = req.body;
 
-  // In production, use process.env.ADMIN_PASSWORD
-  // fallback is 'admin123' for testing if env not set
-  const validPassword = process.env.ADMIN_PASSWORD || 'admin123';
+  // Determine which env variable to check based on source
+  const envKey = SOURCE_PASSWORD_MAP[source] || 'ADMIN_PASSWORD';
+  const validPassword = process.env[envKey] || process.env.ADMIN_PASSWORD || 'admin123';
 
   if (password === validPassword) {
-    // Create token
+    // Create token with source info
     const token = jwt.sign(
-      { role: 'admin' },
+      { role: 'admin', source: source || 'all' },
       process.env.JWT_SECRET || 'your_fallback_secret_key',
       { expiresIn: '24h' }
     );

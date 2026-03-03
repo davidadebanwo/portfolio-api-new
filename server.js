@@ -11,11 +11,18 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   'https://davidadebanwo.com',
   'https://www.davidadebanwo.com',
-  'https://emmanueladama.com',       // Emmanuel's portfolio - REPLACE with actual domain
-  'https://www.emmanueladama.com',   // Emmanuel's portfolio - REPLACE with actual domain
+  'https://emmanueladama.com',
+  'https://www.emmanueladama.com',
+  'https://ikissednick.com',
+  'https://www.ikissednick.com',
+  'https://nickalexander.netlify.app',
   'http://localhost:3000',
   'http://localhost:5500',
+  'http://localhost:5501',
   'http://localhost:5173',
+  'http://127.0.0.1:5500',
+  'http://127.0.0.1:5173',
+  null, // Allow file:// protocol for local development
 ];
 
 // 2. Configure CORS middleware
